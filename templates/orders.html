@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Orders Ledger & Explorer - E-Commerce Dashboard{% endblock %}
+{% block page_title %}Orders Ledger & Customer Explorer{% endblock %}
+{% block page_desc %}Search and inspect individual orders, line-item economics, and customer purchase histories{% endblock %}
+
+{% block content %}
+<div class="panel-card">
+  <!-- Search & Filter Controls -->
+  <div class="table-toolbar">
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+      <div>
+        <input 
+          type="text" 
+          id="orderSearch" 
+          class="search-input" 
+          placeholder="Search by customer name, email, or order ID..." 
+          onkeyup="if(event.key === 'Enter') loadOrdersLedger(1)"
+        >
+      </div>
+
+      <div>
+        <select id="orderStatusFilter" class="select-filter" onchange="loadOrdersLedger(1)">
+          <option value="All" selected>All Statuses</option>
+          <option value="Completed">Completed</option>
+          <option value="Processing">Processing</option>
+          <option value="Cancelled">Cancelled</option>
+          <option value="Refunded">Refunded</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary" onclick="loadOrdersLedger(1)">
+        Search
+      </button>
+    </div>
+
+    <div>
+      <span style="font-size: 0.8rem; color: var(--text-muted); italic;">
+        Click any row to inspect line items or click customer name for profile.
+      </span>
+    </div>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Status</th>
+          <th>Payment</th>
+          <th>Items</th>
+          <th>Revenue</th>
+          <th>Profit</th>
+        </tr>
+      </thead>
+      <tbody id="ordersTableBody">
+        <tr>
+          <td colspan="8" style="text-align: center; padding: 24px;">Loading orders ledger...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination Toolbar -->
+  <div class="pagination">
+    <div id="paginationInfo">Showing 1-15 of orders</div>
+    <div class="page-controls">
+      <button id="btnPrevPage" class="btn btn-outline" onclick="loadOrdersLedger(currentOrdersPage - 1)">
+        &larr; Previous
+      </button>
+      <button id="btnNextPage" class="btn btn-outline" onclick="loadOrdersLedger(currentOrdersPage + 1)">
+        Next &rarr;
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    loadOrdersLedger(1);
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Customer Analytics & RFM Segmentation{% endblock %}
+{% block page_title %}Customer Analytics & Retention Dynamics{% endblock %}
+{% block page_desc %}RFM customer segmentation, Pareto 80/20 contribution curve, and monthly retention cohorts{% endblock %}
+
+{% block content %}
+<!-- Row 1: Pareto Contribution & RFM Distribution -->
+<div class="charts-grid-equal">
+  <!-- Pareto Chart -->
+  <div class="panel-card">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Customer Contribution (Pareto Analysis)</div>
+        <div class="panel-subtitle">Cumulative customer percentage vs. cumulative revenue percentage</div>
+      </div>
+    </div>
+    <div style="margin-bottom: 12px;">
+      <span class="badge badge-primary" id="paretoTop20Highlight">Calculating Pareto metrics...</span>
+    </div>
+    <div class="chart-wrapper">
+      <canvas id="paretoChart"></canvas>
+    </div>
+  </div>
+
+  <!-- RFM Segment Bar Chart -->
+  <div class="panel-card">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Customer Counts by RFM Segment</div>
+        <div class="panel-subtitle">Distribution across 7 recency-frequency-monetary clusters</div>
+      </div>
+    </div>
+    <div class="chart-wrapper" style="margin-top: 28px;">
+      <canvas id="rfmChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Row 2: RFM Strategic Action Matrix Table -->
+<div class="panel-card">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title">RFM Strategic Customer Segments</div>
+      <div class="panel-subtitle">Detailed breakdown of customer count, revenue share, AOV, frequency, and recency</div>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Segment Tier</th>
+          <th>Customer Base</th>
+          <th>Total Revenue Share</th>
+          <th>Avg Customer LTV</th>
+          <th>Avg Frequency</th>
+          <th>Avg Recency</th>
+        </tr>
+      </thead>
+      <tbody id="rfmTableBody">
+        <tr>
+          <td colspan="6" style="text-align: center; padding: 24px;">Computing RFM quintiles...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Row 3: Monthly Cohort Retention Heatmap -->
+<div class="panel-card">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title">Monthly Acquisition Cohort Retention Matrix</div>
+      <div class="panel-subtitle">Percentage of customers who placed a subsequent order M months after their first purchase</div>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table id="cohortMatrixTable" class="cohort-table">
+      <!-- Injected via JavaScript -->
+    </table>
+  </div>
+
+  <div style="margin-top: 14px; font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+    <span>Legend:</span>
+    <span class="cohort-cell heat-100" style="padding: 2px 8px;">Month 0 (100%)</span>
+    <span class="cohort-cell heat-high" style="padding: 2px 8px;">&ge; 40%</span>
+    <span class="cohort-cell heat-mid-high" style="padding: 2px 8px;">25% - 39%</span>
+    <span class="cohort-cell heat-mid" style="padding: 2px 8px;">15% - 24%</span>
+    <span class="cohort-cell heat-low" style="padding: 2px 8px;">8% - 14%</span>
+    <span class="cohort-cell heat-vlow" style="padding: 2px 8px;">&lt; 8%</span>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    loadCustomerAnalytics();
+  });
+</script>
+{% endblock %}

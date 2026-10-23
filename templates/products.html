@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Product Catalog & Profitability - E-Commerce Dashboard{% endblock %}
+{% block page_title %}Products & Profitability Performance{% endblock %}
+{% block page_desc %}Unit economics, gross margins, inventory velocity, and departmental contribution{% endblock %}
+
+{% block topbar_actions %}
+<a href="/api/export-csv?type=products" class="btn btn-outline" download>
+  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+  Export Products CSV
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="panel-card">
+  <!-- Table Filter Controls -->
+  <div class="table-toolbar">
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+      <div>
+        <label for="categoryFilter" style="font-size: 0.8rem; color: var(--text-muted); margin-right: 6px;">Category:</label>
+        <select id="categoryFilter" class="select-filter" onchange="loadProductsCatalog()">
+          <option value="All" selected>All Categories</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Home & Kitchen">Home & Kitchen</option>
+          <option value="Apparel">Apparel</option>
+          <option value="Fitness & Outdoor">Fitness & Outdoor</option>
+          <option value="Beauty & Health">Beauty & Health</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="productSort" style="font-size: 0.8rem; color: var(--text-muted); margin-right: 6px;">Sort By:</label>
+        <select id="productSort" class="select-filter" onchange="loadProductsCatalog()">
+          <option value="revenue" selected>Total Revenue</option>
+          <option value="profit">Net Profit</option>
+          <option value="margin_pct">Profit Margin %</option>
+          <option value="units_sold">Units Sold</option>
+          <option value="retail_price">Retail Price</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Catalog Table -->
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Product Name</th>
+          <th>Category</th>
+          <th>Retail Price</th>
+          <th>Units Sold</th>
+          <th>Total Revenue</th>
+          <th>Total Profit</th>
+          <th>Margin %</th>
+        </tr>
+      </thead>
+      <tbody id="productsTableBody">
+        <tr>
+          <td colspan="8" style="text-align: center; padding: 24px;">Loading catalog products...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    loadProductsCatalog();
+  });
+</script>
+{% endblock %}
